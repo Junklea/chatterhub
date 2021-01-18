@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "780833879886",
+    "project_id": "chatterhub-3050e",
+    "storage_bucket": "chatterhub-3050e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780833879886:android:ed06a709289f0a014cd01f",
+        "android_client_info": {
+          "package_name": "com.example.chatterhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780833879886-isn141eekbke5devp1iqsnm2fjpv27ou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatterhub",
+            "certificate_hash": "0a1f3a983b34a10713f56a0ca5adbd03b543d56c"
+          }
+        },
+        {
+          "client_id": "780833879886-h4dhkl9fapohjppuh4ievlfjqukktg1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ91C3oqd1q3akLytyr2tjzqXNUbOLEWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780833879886-h4dhkl9fapohjppuh4ievlfjqukktg1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
