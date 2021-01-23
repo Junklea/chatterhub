@@ -1,6 +1,7 @@
 import 'package:chatterhub/src/services/authentication_service.dart';
 import 'package:chatterhub/src/services/firestore_service.dart';
 import 'package:chatterhub/src/ui/views/home_view.dart';
+import 'package:chatterhub/src/ui/views/message_view.dart';
 import 'package:chatterhub/src/ui/views/sign_in_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,7 +52,7 @@ class AuthenticationWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
-      return HomePage();
+      return MessagePage();
     }
 
     return SignInPage();

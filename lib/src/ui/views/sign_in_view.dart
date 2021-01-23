@@ -25,15 +25,30 @@ class SignInPage extends StatelessWidget {
                 labelText: "Password",
               ),
             ),
-            RaisedButton(
-              onPressed: () {
-                context.read<AuthenticationService>().signIn(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
-                    );
-              },
-              child: Text("Sign in"),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    context.read<AuthenticationService>().signIn(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+                  },
+                  child: Text("Sign in"),
+                ),
+                SizedBox(width: 20),
+                RaisedButton(
+                  onPressed: () {
+                    context.read<AuthenticationService>().signUp(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+                  },
+                  child: Text("Sign up"),
+                ),
+              ],
+            ),
           ],
         ),
       ),
