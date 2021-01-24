@@ -1,6 +1,6 @@
 import 'package:chatterhub/src/app/locator.dart';
 import 'package:chatterhub/src/app/router.gr.dart' as lol;
-import 'package:chatterhub/src/ui/views/partial_builds/partial_builds_view.dart';
+import 'package:chatterhub/src/ui/views/reactive_example/reactive_example_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ChatterHub',
-      home: PartialBuildsView(),
+      home: ReactiveExampleView(),
       onGenerateRoute: lol.Router(),
       navigatorKey: StackedService.navigatorKey,
     );
