@@ -1,10 +1,10 @@
 import 'package:chatterhub/src/models/todo.dart';
 import 'package:chatterhub/src/services/firestore_service.dart';
+import 'package:chatterhub/src/ui/widgets/todo_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chatterhub/src/services/authentication_service.dart';
-import 'package:chatterhub/src/ui/widgets/todo_card.dart';
 
 class HomePage extends StatefulWidget {
   @override
