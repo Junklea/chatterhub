@@ -9,15 +9,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  auto_route: ^0.6.9
   cloud_firestore: ^0.16.0
   cupertino_icons: ^1.0.1
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
+  get_it: ^5.0.6
+  injectable: ^1.0.7
   provider: ^4.3.3
+  stacked: ^1.7.7
+  stacked_services: ^0.6.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  auto_route_generator: ^0.6.10
+  build_runner: ^1.11.0
+  injectable_generator: ^1.0.7
 
 flutter:
   uses-material-design: true
