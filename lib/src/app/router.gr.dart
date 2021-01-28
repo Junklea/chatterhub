@@ -10,6 +10,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../models/my_post.dart';
+import '../ui/views/chathome/chathome_view.dart';
 import '../ui/views/counter/counter_view.dart';
 import '../ui/views/create_post/create_post_view.dart';
 import '../ui/views/home/home_view.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const String counterView = '/counter-view';
   static const String createPostView = '/create-post-view';
   static const String homeView = '/home-view';
+  static const String chatHomeView = '/chat-home-view';
   static const all = <String>{
     startupView,
     signUpView,
@@ -31,6 +33,7 @@ class Routes {
     counterView,
     createPostView,
     homeView,
+    chatHomeView,
   };
 }
 
@@ -44,6 +47,7 @@ class Router extends RouterBase {
     RouteDef(Routes.counterView, page: CounterView),
     RouteDef(Routes.createPostView, page: CreatePostView),
     RouteDef(Routes.homeView, page: HomeView),
+    RouteDef(Routes.chatHomeView, page: ChatHomeView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -87,6 +91,12 @@ class Router extends RouterBase {
     HomeView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const HomeView(),
+        settings: data,
+      );
+    },
+    ChatHomeView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const ChatHomeView(),
         settings: data,
       );
     },

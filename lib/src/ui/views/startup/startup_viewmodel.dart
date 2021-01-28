@@ -13,7 +13,7 @@ class StartupViewModel extends BaseViewModel {
     var hasLoggedInUser = await _authenticationService.isUserLoggedIn();
 
     if (hasLoggedInUser) {
-      _navigationService.navigateTo(Routes.homeView);
+      _navigationService.navigateTo(Routes.chatHomeView);
     } else {
       _navigationService.navigateTo(Routes.signUpView);
     }

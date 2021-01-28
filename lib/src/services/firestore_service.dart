@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chatterhub/src/models/my_chatroom.dart';
 import 'package:chatterhub/src/models/my_post.dart';
 import 'package:chatterhub/src/models/my_user.dart';
 import 'package:chatterhub/src/models/todo.dart';
@@ -15,6 +16,29 @@ class FirestoreService {
   CollectionReference get messageStore =>
       _firestore.collection('chat_messages');
 
+  // Chat Rooms
+  final CollectionReference _chatRoomsReferance =
+      FirebaseFirestore.instance.collection("chat_rooms");
+
+  final StreamController<List<MyChatRoom>> _chatRoomsController =
+      StreamController<List<MyChatRoom>>.broadcast();
+
+  Stream listenToChatRooms() {
+    _chatRoomsReferance.snapshots().listen((chatRoomsSnapshot) {
+      if (chatRoomsSnapshot.docs.isNotEmpty) {
+        var chatRooms = chatRoomsSnapshot.docs
+            .map((snapshot) => MyChatRoom.fromMap(snapshot.data(), snapshot.id))
+            .where((mappedItem) => mappedItem.title != null)
+            .toList();
+
+        _chatRoomsController.add(chatRooms);
+      }
+    });
+
+    return _chatRoomsController.stream;
+  }
+
+  // User
   final CollectionReference _usersCollectionReference =
       FirebaseFirestore.instance.collection("users");
 
@@ -35,6 +59,7 @@ class FirestoreService {
     }
   }
 
+  // Posts
   final CollectionReference _postsCollectionReference =
       FirebaseFirestore.instance.collection('posts');
 
@@ -103,6 +128,7 @@ class FirestoreService {
     return _postsController.stream;
   }
 
+  // Legacy Message
   Future<void> addMessage({String value, User currentUser}) async {
     try {
       await messageStore.add({
@@ -145,6 +171,7 @@ class FirestoreService {
     }
   }
 
+  // Legacy Todo
   Future<void> addTodo({String uid, String content}) async {
     try {
       _firestore.collection("todos").doc(uid).collection("todos").add({
