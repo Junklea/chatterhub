@@ -1,14 +1,107 @@
+import 'dart:async';
+
+import 'package:chatterhub/src/models/my_post.dart';
+import 'package:chatterhub/src/models/my_user.dart';
 import 'package:chatterhub/src/models/todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class FirestoreService {
-  final FirebaseFirestore _firestore;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   CollectionReference get messageStore =>
       _firestore.collection('chat_messages');
 
-  FirestoreService(this._firestore);
+  final CollectionReference _usersCollectionReference =
+      FirebaseFirestore.instance.collection("users");
+
+  Future createUser(MyUser user) async {
+    try {
+      await _usersCollectionReference.doc(user.id).set(user.toJson());
+    } catch (e) {
+      return e.message;
+    }
+  }
+
+  Future getUser(String uid) async {
+    try {
+      var userData = await _usersCollectionReference.doc(uid).get();
+      return MyUser.fromData(userData.data());
+    } catch (e) {
+      return e.message;
+    }
+  }
+
+  final CollectionReference _postsCollectionReference =
+      FirebaseFirestore.instance.collection('posts');
+
+  Future addPost(MyPost post) async {
+    try {
+      await _postsCollectionReference.add(post.toMap());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future deletePost(String documentId) async {
+    await _postsCollectionReference.doc(documentId).delete();
+  }
+
+  Future updatePost(MyPost post) async {
+    try {
+      await _postsCollectionReference.doc(post.documentId).update(post.toMap());
+      return true;
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      }
+
+      return e.toString();
+    }
+  }
+
+  Future getPostsOnceOff() async {
+    try {
+      var postDocuments = await _postsCollectionReference.get();
+      if (postDocuments.docs.isNotEmpty) {
+        return postDocuments.docs
+            .map((snapshot) => MyPost.fromMap(snapshot.data(), snapshot.id))
+            .where((mappedItem) => mappedItem.title != null)
+            .toList();
+      }
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      }
+
+      return e.toString();
+    }
+  }
+
+  final StreamController<List<MyPost>> _postsController =
+      StreamController<List<MyPost>>.broadcast();
+
+  Stream listenToPostsRealTime() {
+    // Register the handler for when the posts data changes
+    _postsCollectionReference.snapshots().listen((postsSnapshot) {
+      if (postsSnapshot.docs.isNotEmpty) {
+        var posts = postsSnapshot.docs
+            .map((snapshot) => MyPost.fromMap(snapshot.data(), snapshot.id))
+            .where((mappedItem) => mappedItem.title != null)
+            .toList();
+
+        // Add the posts onto the controller
+        _postsController.add(posts);
+      }
+    });
+
+    // Return the stream underlying our _postsController.
+    return _postsController.stream;
+  }
 
   Future<void> addMessage({String value, User currentUser}) async {
     try {

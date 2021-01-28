@@ -22,12 +22,15 @@ class LoginView extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: 150,
-                  child: Image.asset('assets/images/title.png'),
+                Text(
+                  'Log In',
+                  style: TextStyle(
+                    fontSize: 38,
+                  ),
                 ),
+                verticalSpaceLarge,
                 InputField(
                   placeholder: 'Email',
                   controller: emailController,
@@ -45,8 +48,12 @@ class LoginView extends StatelessWidget {
                   children: [
                     BusyButton(
                       title: 'Login',
+                      busy: model.isBusy,
                       onPressed: () {
-                        // TODO: Perform firebase login here
+                        model.login(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
                       },
                     )
                   ],
@@ -55,7 +62,7 @@ class LoginView extends StatelessWidget {
                 TextLink(
                   'Create an Account if you\'re new.',
                   onPressed: () {
-                    // TODO: Handle navigation
+                    model.navigateToSignup();
                   },
                 )
               ],

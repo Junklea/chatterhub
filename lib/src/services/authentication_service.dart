@@ -1,39 +1,66 @@
+import 'package:chatterhub/src/app/locator.dart';
+import 'package:chatterhub/src/models/my_user.dart';
+import 'package:chatterhub/src/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class AuthenticationService {
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirestoreService _firestoreService = getIt<FirestoreService>();
 
-  AuthenticationService(this._firebaseAuth);
+  MyUser _currentUser;
+  MyUser get currentUser => _currentUser;
 
-  Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
+  Future _populateCurrentUser(User user) async {
+    if (user != null) {
+      _currentUser = await _firestoreService.getUser(user.uid);
+    }
+  }
 
-  User get currentUser => _firebaseAuth.currentUser;
+  Future<bool> isUserLoggedIn() async {
+    var user = _firebaseAuth.currentUser;
+    await _populateCurrentUser(user);
+    // print(user);
+    return user != null;
+  }
 
-  Future<String> signIn({String email, String password}) async {
+  Future loginWithEmail({
+    @required String email,
+    @required String password,
+  }) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return "Signed in";
-    } on FirebaseAuthException catch (e) {
+      var user = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return user != null;
+    } catch (e) {
       return e.message;
     }
   }
 
-  Future<String> signUp({String email, String password}) async {
+  Future signUpWithEmail({
+    @required String fullName,
+    @required String email,
+    @required String password,
+    @required String role,
+  }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      var authResult = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      await _firestoreService.createUser(MyUser(
+        id: authResult.user.uid,
         email: email,
-        password: password,
-      );
-      return "Signed up";
-    } on FirebaseAuthException catch (e) {
+        fullName: fullName,
+        userRole: role,
+      ));
+      return authResult.user != null;
+    } catch (e) {
       return e.message;
     }
   }
 
-  Future<void> signOut() async {
+  Future signOut() async {
     await _firebaseAuth.signOut();
   }
 }
