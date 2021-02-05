@@ -27,7 +27,7 @@ class ChatMessage extends StatelessWidget {
               vertical: 12,
             ),
             child: Text(
-              data['value'],
+              data['content'],
               style: TextStyle(
                 color: Colors.white,
               ),

@@ -39,6 +39,7 @@ class ChatHomeView extends StatelessWidget {
                           onTap: () => {},
                           child: ChatItem(
                             chatRoom: model.chatRooms[index],
+                            goToGroup: model.goToGroup,
                           ),
                         ),
                       )

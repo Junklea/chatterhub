@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatterhub/src/models/my_chatroom.dart';
+import 'package:chatterhub/src/models/my_message.dart';
 import 'package:chatterhub/src/models/my_post.dart';
 import 'package:chatterhub/src/models/my_user.dart';
 import 'package:chatterhub/src/models/todo.dart';
@@ -20,6 +21,15 @@ class FirestoreService {
   final CollectionReference _chatRoomsReferance =
       FirebaseFirestore.instance.collection("chat_rooms");
 
+  Future<MyChatRoom> getChatRoom(String id) async {
+    try {
+      var userData = await _chatRoomsReferance.doc(id).get();
+      return MyChatRoom.fromMap(userData.data(), userData.id);
+    } catch (e) {
+      return e.message;
+    }
+  }
+
   final StreamController<List<MyChatRoom>> _chatRoomsController =
       StreamController<List<MyChatRoom>>.broadcast();
 
@@ -36,6 +46,47 @@ class FirestoreService {
     });
 
     return _chatRoomsController.stream;
+  }
+
+  final StreamController<List<MyMessage>> _messageController =
+      StreamController<List<MyMessage>>.broadcast();
+
+  // Get Messages by Group Doc Id
+  Stream getMessagesByGroupDocId(String id) {
+    _chatRoomsReferance
+        .doc(id)
+        .collection("messages")
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .listen((chatMessagesSnapshot) {
+      if (chatMessagesSnapshot.docs.isNotEmpty) {
+        var messages = chatMessagesSnapshot.docs
+            .map((e) => MyMessage.fromMap(e.data(), e.id))
+            .where((element) => element.content != null)
+            .toList();
+
+        _messageController.add(messages);
+      }
+    });
+    return _messageController.stream;
+  }
+
+  // Add messages to current group
+  Future<void> addMessageToCurrentGroup(
+      {String groupId, String value, MyUser currentUser}) async {
+    final CollectionReference _currentGroupReferance =
+        _chatRoomsReferance.doc(groupId).collection('messages');
+    try {
+      await _currentGroupReferance.add({
+        'author': currentUser.email,
+        'user_id': currentUser.id,
+        'photo_url': 'https://placehold.it/100x100',
+        'timestamp': Timestamp.now().microsecondsSinceEpoch,
+        'content': value,
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 
   // User

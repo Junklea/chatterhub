@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 
 class ChatItem extends StatelessWidget {
   final MyChatRoom chatRoom;
+  final goToGroup;
 
-  const ChatItem({Key key, @required this.chatRoom}) : super(key: key);
+  const ChatItem({Key key, @required this.chatRoom, this.goToGroup})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        goToGroup(chatRoom.documentId);
+      },
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
         leading: GestureDetector(
