@@ -17,6 +17,15 @@ class ChatHomeView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: null,
           title: Text("ChatterHub"),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.exit_to_app),
+              tooltip: 'Sign Out',
+              onPressed: () {
+                model.signOut();
+              },
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(

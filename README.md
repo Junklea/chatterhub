@@ -1,6 +1,12 @@
 # chatterhub
 
-- [ ] Auth
-- [ ] Simple UI
-- [ ] P2P Messaging System
-- [ ] Group System
+- [x] Auth
+- [x] Simple UI
+- [x] P2P Messaging System
+- [x] Group System
+- [x] Startup Config
+- [ ] CRUD Group
+- [ ] Group Model
+- [ ] Message
+- [ ] Groupchat Screen
+- [ ]
