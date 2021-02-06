@@ -15,15 +15,7 @@ class ChatItem extends StatelessWidget {
         goToGroup(chatRoom.documentId);
       },
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
-        leading: GestureDetector(
-          onTap: () {},
-          child: CircleAvatar(
-            radius: 30.0,
-            backgroundImage:
-                NetworkImage(chatRoom.imageUrl ?? "https://picsum.photos/50"),
-          ),
-        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
         title: Text(
           chatRoom.title,
           maxLines: 1,
@@ -32,7 +24,6 @@ class ChatItem extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text("lorem ipsum"),
       ),
     );
   }

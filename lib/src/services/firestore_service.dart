@@ -30,11 +30,25 @@ class FirestoreService {
     }
   }
 
+  Future<void> createGroup(String groupName) async {
+    try {
+      await _chatRoomsReferance.add({
+        'title': groupName,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      return e.message;
+    }
+  }
+
   final StreamController<List<MyChatRoom>> _chatRoomsController =
       StreamController<List<MyChatRoom>>.broadcast();
 
   Stream listenToChatRooms() {
-    _chatRoomsReferance.snapshots().listen((chatRoomsSnapshot) {
+    _chatRoomsReferance
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .listen((chatRoomsSnapshot) {
       if (chatRoomsSnapshot.docs.isNotEmpty) {
         var chatRooms = chatRoomsSnapshot.docs
             .map((snapshot) => MyChatRoom.fromMap(snapshot.data(), snapshot.id))
@@ -81,8 +95,12 @@ class FirestoreService {
         'author': currentUser.email,
         'user_id': currentUser.id,
         'photo_url': 'https://placehold.it/100x100',
-        'timestamp': Timestamp.now().microsecondsSinceEpoch,
+        // 'timestamp': Timestamp.now().microsecondsSinceEpoch,
+        'timestamp': FieldValue.serverTimestamp(),
         'content': value,
+      });
+      await _chatRoomsReferance.doc(groupId).update({
+        'timestamp': FieldValue.serverTimestamp(),
       });
     } catch (e) {
       rethrow;

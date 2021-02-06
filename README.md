@@ -5,8 +5,8 @@
 - [x] P2P Messaging System
 - [x] Group System
 - [x] Startup Config
-- [ ] CRUD Group
-- [ ] Group Model
+- [x] CRUD Group
+- [x] Group Model
 - [ ] Message
 - [ ] Groupchat Screen
 - [ ]

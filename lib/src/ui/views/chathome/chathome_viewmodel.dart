@@ -1,5 +1,6 @@
 import 'package:chatterhub/src/app/locator.dart';
 import 'package:chatterhub/src/app/router.gr.dart';
+import 'package:chatterhub/src/enum/dialog_type.dart';
 import 'package:chatterhub/src/models/my_chatroom.dart';
 import 'package:chatterhub/src/services/authentication_service.dart';
 import 'package:chatterhub/src/services/firestore_service.dart';
@@ -11,6 +12,7 @@ class ChatHomeViewModel extends BaseModel {
   final NavigationService _navigationService = getIt<NavigationService>();
   final AuthenticationService _authenticationService =
       getIt<AuthenticationService>();
+  final DialogService _dialogService = getIt<DialogService>();
 
   List<MyChatRoom> _chatRooms;
   List<MyChatRoom> get chatRooms => _chatRooms;
@@ -42,5 +44,17 @@ class ChatHomeViewModel extends BaseModel {
       }
       setBusy(false);
     });
+  }
+
+  Future addGroup() async {
+    var response = await _dialogService.showCustomDialog(
+      title: 'Enter group name',
+      mainButtonTitle: 'Done',
+      variant: DialogType.Form,
+    );
+    if (response.responseData[0] != '') {
+      await _firestoreService.createGroup(response.responseData[0]);
+    }
+    print(response.responseData[0]);
   }
 }

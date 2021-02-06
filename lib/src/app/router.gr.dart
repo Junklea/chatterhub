@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import '../models/my_chatroom.dart';
 import '../ui/views/chathome/chathome_view.dart';
 import '../ui/views/group/group_view.dart';
-import '../ui/views/home/home_view.dart';
 import '../ui/views/login/login_view.dart';
 import '../ui/views/signup/signup_view.dart';
 import '../ui/views/startup/startup_view.dart';
@@ -21,14 +20,12 @@ class Routes {
   static const String startupView = '/';
   static const String signUpView = '/sign-up-view';
   static const String loginView = '/login-view';
-  static const String homeView = '/home-view';
   static const String chatHomeView = '/chat-home-view';
   static const String groupView = '/group-view';
   static const all = <String>{
     startupView,
     signUpView,
     loginView,
-    homeView,
     chatHomeView,
     groupView,
   };
@@ -41,7 +38,6 @@ class Router extends RouterBase {
     RouteDef(Routes.startupView, page: StartupView),
     RouteDef(Routes.signUpView, page: SignUpView),
     RouteDef(Routes.loginView, page: LoginView),
-    RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.chatHomeView, page: ChatHomeView),
     RouteDef(Routes.groupView, page: GroupView),
   ];
@@ -63,12 +59,6 @@ class Router extends RouterBase {
     LoginView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => LoginView(),
-        settings: data,
-      );
-    },
-    HomeView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const HomeView(),
         settings: data,
       );
     },

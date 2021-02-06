@@ -31,7 +31,9 @@ class ChatHomeView extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           child: !model.isBusy ? Icon(Icons.add) : CircularProgressIndicator(),
-          onPressed: () => {},
+          onPressed: () {
+            model.addGroup();
+          },
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
