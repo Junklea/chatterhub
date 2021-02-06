@@ -1,8 +1,9 @@
+import 'package:chatterhub/src/models/my_message.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessageOther extends StatelessWidget {
   final int index;
-  final Map<String, dynamic> data;
+  final MyMessage data;
   final bool showAvatar;
 
   const ChatMessageOther(
@@ -21,7 +22,7 @@ class ChatMessageOther extends StatelessWidget {
         children: [
           showAvatar
               ? CircleAvatar(
-                  backgroundImage: NetworkImage(data['photo_url']),
+                  backgroundImage: NetworkImage('https://picsum.photos/40'),
                 )
               : SizedBox(
                   width: 40,
@@ -34,7 +35,7 @@ class ChatMessageOther extends StatelessWidget {
               vertical: 12,
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.blue[50],
               borderRadius: BorderRadius.circular(5),
             ),
             child: Column(
@@ -42,7 +43,7 @@ class ChatMessageOther extends StatelessWidget {
               children: [
                 if (showAvatar)
                   Text(
-                    '${data['author']} said: ',
+                    '${data.userName} said: ',
                     style: TextStyle(
                       color: Colors.blueGrey,
                       fontStyle: FontStyle.italic,
@@ -51,7 +52,7 @@ class ChatMessageOther extends StatelessWidget {
                     ),
                   ),
                 if (showAvatar) SizedBox(height: 5),
-                Text(data['value']),
+                Text(data.content),
               ],
             ),
           )

@@ -5,8 +5,10 @@ class MyMessage {
   final String imageUrl;
   final String userId;
   final String documentId;
+  final String userName;
 
   MyMessage({
+    @required this.userName,
     @required this.userId,
     @required this.content,
     this.documentId,
@@ -18,6 +20,7 @@ class MyMessage {
       'userId': userId,
       'content': content,
       'imageUrl': imageUrl,
+      'userName': userName,
     };
   }
 
@@ -27,8 +30,9 @@ class MyMessage {
     return MyMessage(
       content: map['content'],
       imageUrl: map['imageUrl'],
-      userId: map['userId'],
+      userId: map['user_id'],
       documentId: documentId,
+      userName: map['userName'],
     );
   }
 }

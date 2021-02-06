@@ -4,9 +4,7 @@ import 'package:chatterhub/src/models/my_chatroom.dart';
 import 'package:chatterhub/src/models/my_message.dart';
 import 'package:chatterhub/src/models/my_post.dart';
 import 'package:chatterhub/src/models/my_user.dart';
-import 'package:chatterhub/src/models/todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
@@ -98,6 +96,7 @@ class FirestoreService {
         // 'timestamp': Timestamp.now().microsecondsSinceEpoch,
         'timestamp': FieldValue.serverTimestamp(),
         'content': value,
+        'userName': currentUser.fullName,
       });
       await _chatRoomsReferance.doc(groupId).update({
         'timestamp': FieldValue.serverTimestamp(),
@@ -195,88 +194,5 @@ class FirestoreService {
 
     // Return the stream underlying our _postsController.
     return _postsController.stream;
-  }
-
-  // Legacy Message
-  Future<void> addMessage({String value, User currentUser}) async {
-    try {
-      await messageStore.add({
-        'author': currentUser.email,
-        'author_id': currentUser.uid,
-        'photo_url': 'https://placehold.it/100x100',
-        'timestamp': Timestamp.now().microsecondsSinceEpoch,
-        'value': value,
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> deleteMessage({String messageId}) async {
-    try {
-      await messageStore.doc(messageId).delete();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Stream<List<TodoModel>> streamTodos({String uid}) {
-    try {
-      return _firestore
-          .collection("todos")
-          .doc(uid)
-          .collection("todos")
-          .where("done", isEqualTo: false)
-          .snapshots()
-          .map((query) {
-        final List<TodoModel> retVal = <TodoModel>[];
-        for (final DocumentSnapshot doc in query.docs) {
-          retVal.add(TodoModel.fromDocumentSnapshot(documentSnapshot: doc));
-        }
-        return retVal;
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // Legacy Todo
-  Future<void> addTodo({String uid, String content}) async {
-    try {
-      _firestore.collection("todos").doc(uid).collection("todos").add({
-        "content": content,
-        "done": false,
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> updateTodo({String uid, String todoId}) async {
-    try {
-      _firestore
-          .collection("todos")
-          .doc(uid)
-          .collection("todos")
-          .doc(todoId)
-          .update({
-        "done": true,
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> deleteTodo({String uid, String todoId}) async {
-    try {
-      _firestore
-          .collection("todos")
-          .doc(uid)
-          .collection("todos")
-          .doc(todoId)
-          .delete();
-    } catch (e) {
-      print(e);
-    }
   }
 }

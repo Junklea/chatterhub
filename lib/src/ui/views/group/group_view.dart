@@ -2,6 +2,7 @@ import 'package:chatterhub/src/models/my_chatroom.dart';
 import 'package:chatterhub/src/ui/shared/ui_helpers.dart';
 import 'package:chatterhub/src/ui/views/group/group_viewmodel.dart';
 import 'package:chatterhub/src/ui/widgets/chat_message.dart';
+import 'package:chatterhub/src/ui/widgets/chat_message_other.dart';
 import 'package:chatterhub/src/ui/widgets/message_form.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -42,15 +43,29 @@ class GroupView extends StatelessWidget {
                     ? ListView.builder(
                         reverse: true,
                         itemCount: model.messages.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () => {},
-                          child: ChatMessage(
-                            index: index,
-                            data: model.messages[index].toMap(),
-                            showAvatar: true,
-                          ),
-                        ),
-                      )
+                        itemBuilder: (context, index) {
+                          // print(model.messages[index].userId);
+                          if (model.messages[index].userId ==
+                              model.currentUser.id) {
+                            return GestureDetector(
+                              onTap: () => {},
+                              child: ChatMessage(
+                                index: index,
+                                data: model.messages[index].toMap(),
+                                showAvatar: model.shouldDisplayAvatar(index),
+                              ),
+                            );
+                          } else {
+                            return GestureDetector(
+                              onTap: () => {},
+                              child: ChatMessageOther(
+                                index: index,
+                                data: model.messages[index],
+                                showAvatar: model.shouldDisplayAvatar(index),
+                              ),
+                            );
+                          }
+                        })
                     : Center(
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation(

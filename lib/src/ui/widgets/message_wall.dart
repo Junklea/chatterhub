@@ -16,11 +16,11 @@
 // }
 
 // class _MessageWallState extends State<MessageWall> {
-//   bool shouldDisplayAvatar(int idx) {
-//     if (idx == widget.messages.length - 1) return true;
-//     return widget.messages[idx + 1].data()['author_id'] !=
-//         widget.messages[idx].data()['author_id'];
-//   }
+// bool shouldDisplayAvatar(int idx) {
+//   if (idx == widget.messages.length - 1) return true;
+//   return widget.messages[idx + 1].data()['author_id'] !=
+//       widget.messages[idx].data()['author_id'];
+// }
 
 //   @override
 //   Widget build(BuildContext context) {

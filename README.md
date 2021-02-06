@@ -7,6 +7,5 @@
 - [x] Startup Config
 - [x] CRUD Group
 - [x] Group Model
-- [ ] Message
-- [ ] Groupchat Screen
-- [ ]
+- [x] Message
+- [x] Groupchat Screen
